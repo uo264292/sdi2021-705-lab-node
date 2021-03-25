@@ -24,8 +24,17 @@ module.exports = function (app,swig){
 
 
     app.get('/autores/agregar', function (req,res){
-        let respuesta = swig.renderFile('views/autores/bagregar.html',{
 
+        let roles = [{
+            "cantante" : "Cantante",
+            "guitarrista" : "Guitarrista",
+            "bateria": "Bateria",
+            "bajista": "Bajista",
+            "teclista" : "Teclista"
+        }];
+
+        let respuesta = swig.renderFile('views/autores/bagregar.html',{
+            listaRoles : roles
         });
         res.send(respuesta);
     })
