@@ -7,6 +7,9 @@ let mongo = require('mongodb');
 let gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app,mongo);
 
+let fileUpload = require('express-fileupload');
+app.use(fileUpload());
+
 app.use(express.static('public'));
 let swig = require('swig');
 let bodyParser = require('body-parser');
