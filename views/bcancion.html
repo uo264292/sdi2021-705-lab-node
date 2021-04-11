@@ -35,7 +35,7 @@
 	  </div>
 
 	<h2>Añadir Comentarios</h2>
-	<form class="form-horizontal" method="post" action="/comentarios/{{ cancion._id.toString() }}">
+	<form class="form-horizontal" method="post" action="/comentarios/{{ cancion._id.toString() }}" encType="multipart/form-data">
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="comentario">Comentario:</label>
 			<div class="col-sm-10">
