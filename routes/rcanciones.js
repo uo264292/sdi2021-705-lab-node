@@ -260,7 +260,8 @@ module.exports = function(app, swig, gestorBD) {
                     }
                 });
             } else{
-                res.send("Ya has comprado esta cancion o eres su autor.");
+                //res.send("Ya has comprado esta cancion o eres su autor.");
+                res.redirect("/errors" + "?mensaje=La cancion no ha podido ser comprada" + "&tipoMensaje=alert-danger ");
             }
         });
 
