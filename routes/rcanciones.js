@@ -262,6 +262,8 @@ module.exports = function(app, swig, gestorBD) {
             } else{
                 //res.send("Ya has comprado esta cancion o eres su autor.");
                 res.redirect("/errors" + "?mensaje=La cancion no ha podido ser comprada" + "&tipoMensaje=alert-danger ");
+                //req.session.errores={mensaje: 'Ya has comprado esta cancion o eres su autor.',tipoMensaje: "alert-danger"};
+                //res.redirect("/errors");
             }
         });
 
