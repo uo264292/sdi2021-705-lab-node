@@ -34,6 +34,8 @@ module.exports = function(app, gestorBD) {
 
     app.delete("/api/cancion/:id", function(req, res) {
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id)}
+        let cancion_id = gestorBD.mongo.ObjectID(req.params.id);
+        let usuario = res.usuario;
 
         gestorBD.eliminarCancion(criterio,function(canciones){
             if ( canciones == null ){
@@ -56,21 +58,32 @@ module.exports = function(app, gestorBD) {
             precio : req.body.precio,
         }
         // ¿Validar nombre, genero, precio?
-
-        gestorBD.insertarCancion(cancion, function(id){
-            if (id == null) {
-                res.status(500);
+        validarDatosAlCrear(cancion, function (errores){
+            if (errores !== null && errores.length>0){
+                res.status(403);
                 res.json({
-                    error : "se ha producido un error"
-                })
-            } else {
-                res.status(201);
-                res.json({
-                    mensaje : "canción insertada",
-                    _id : id
-                })
+                   errores : errores
+                });
+            }
+            else{
+                gestorBD.insertarCancion(cancion, function(id){
+                    if (id == null) {
+                        errores.push("Se ha producido un error")
+                        res.status(500);
+                        res.json({
+                            errores : errores
+                        })
+                    } else {
+                        res.status(201);
+                        res.json({
+                            mensaje : "canción insertada",
+                            _id : id
+                        })
+                    }
+                });
             }
         });
+
 
     });
 
@@ -131,4 +144,22 @@ module.exports = function(app, gestorBD) {
         });
     });
 
+    function validarDatosAlCrear(cancion, funcionCallBack){
+        let errores = new Array();
+        if (cancion.nombre===null|| typeof cancion.nombre ==='undefined'||cancion.nombre==='')
+            errores.push("Debe rellenarse el nombre de la cancion.");
+        if (cancion.genero === null || typeof cancion.genero === 'undefined' || cancion.genero ==='')
+            errores.push("Debe rellenarse el campo del genero.");
+        if (cancion.precio===null || typeof cancion.precio === 'undefined' || cancion.precio < 0 || cancion.precio==='')
+            errores.push("El campo del precio no puede ser negativo.");
+        if (errores.length<=0){
+            funcionCallBack(null);
+        }
+        else
+            funcionCallBack(errores);
+    }
+
+    function usuarioEsAutorDeLaCancion(usuario, cancion_id, funcionCallBack){
+
+    }
 }
